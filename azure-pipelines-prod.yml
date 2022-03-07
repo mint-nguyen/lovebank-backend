@@ -1,0 +1,22 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  gqlImageName: 'lovebank-prod-backend'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '17.x'
+    displayName: 'Install Node.js'
+
+  - task: Docker@2
+    displayName: 'Build & Push GQL image'
+    inputs:
+      containerRegistry: 'lovebank'
+      repository: '$(gqlImageName)'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile.prod'
